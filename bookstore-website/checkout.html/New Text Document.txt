@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <script src="https://js.stripe.com/v3/"></script> <!-- Stripe JS -->
+</head>
+<body>
+  <h2>Checkout</h2>
+  <button id="checkout-button">Proceed to Checkout</button>
+
+  <script>
+    const stripe = Stripe('your_stripe_public_key'); // Replace with your actual Stripe public key
+
+    const checkoutButton = document.getElementById('checkout-button');
+    checkoutButton.addEventListener('click', () => {
+      // Call the backend to create a payment intent
+      fetch('/create-payment-intent', { method: 'POST' })
+        .then((res) => res.json())  // Parse the response as JSON
+        .then((data) => {
+          const clientSecret = data.clientSecret;  // Get the client secret from the response
+          stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+              card: {
+                number: '4111111111111111',  // Sample credit card number (for testing only)
+                exp_month: 12,
+                exp_year: 2023,
+                cvc: '123',
+              }
+            }
+          }).then(function(result) {
+            if (result.error) {
+              alert(result.error.message);  // If there's an error, display it
+            } else {
+              if (result.paymentIntent.status === 'succeeded') {
+                alert('Payment Successful!');  // Display success message if payment is successful
+              }
+            }
+          });
+        });
+    });
+  </script>
+</body>
+</html>

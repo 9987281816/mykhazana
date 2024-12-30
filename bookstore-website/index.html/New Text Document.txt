@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookBazaar</title>
+  <link rel="stylesheet" href="css/style.css">  <!-- Link to external CSS -->
+</head>
+<body>
+  <header>
+    <h1>Welcome to BookBazaar</h1>
+  </header>
+
+  <div class="book-container">
+    <!-- Book List -->
+    <div class="book-card">
+      <img src="images/image1.jpg" alt="The Great Gatsby">
+      <h3>The Great Gatsby</h3>
+      <p>By: F. Scott Fitzgerald</p>
+      <p>$20</p>
+      <p>A novel about the American Dream.</p>
+      <a href="/checkout">Buy Now</a>
+    </div>
+
+    <div class="book-card">
+      <img src="images/image2.jpg" alt="1984">
+      <h3>1984</h3>
+      <p>By: George Orwell</p>
+      <p>$25</p>
+      <p>A dystopian novel about totalitarianism.</p>
+      <a href="/checkout">Buy Now</a>
+    </div>
+  </div>
+</body>
+</html>

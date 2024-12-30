@@ -1,0 +1,47 @@
+const express = require('express');
+const stripe = require('stripe')('your_stripe_secret_key'); // Replace with your actual Stripe secret key
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.static('public'));  // Serves static files like HTML, CSS, and images
+app.use(express.json());  // Parses incoming requests with JSON payload
+
+// Dummy books data
+const books = [
+  { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", price: 20, image: "image1.jpg", description: "A novel about the American Dream." },
+  { id: 2, title: "1984", author: "George Orwell", price: 25, image: "image2.jpg", description: "A dystopian novel about totalitarianism." },
+];
+
+// Route to serve the homepage (index.html)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Route to serve the checkout page (checkout.html)
+app.get('/checkout', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'checkout.html'));
+});
+
+// Route to create a Stripe payment intent
+app.post('/create-payment-intent', async (req, res) => {
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 5000, // Example amount in cents ($50)
+      currency: 'usd',
+    });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret,  // Sends the secret key for payment confirmation
+    });
+  } catch (error) {
+    res.status(500).send(error.message);  // Sends any errors if they occur
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
